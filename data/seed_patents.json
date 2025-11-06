@@ -1,0 +1,98 @@
+[
+  {
+    "doc_number": "US6258558B1",
+    "title": "Method for selection of proteins using RNA-protein fusions",
+    "jurisdiction": "US",
+    "kind_code": "B1",
+    "publication_date": "2001-07-10",
+    "earliest_priority_date": "1997-01-31",
+    "status": "Expired-lifetime (per USPTO / Google Patents view)",
+    "assignees": ["The General Hospital Corporation"],
+    "cpc_codes": ["C12N15/64", "C07K14/47"],
+    "source_urls": [
+      "https://patents.google.com/patent/US6258558B1/en",
+      "https://patft.uspto.gov/netacgi/nph-Parser?patentnumber=6258558"
+    ],
+    "notes": "Foundational puromycin-mRNA display family from Roberts & Szostak; commonly cited as expired in US."
+  },
+  {
+    "doc_number": "EP2647720B1",
+    "title": "Peptide library production method, peptide library production apparatus, and peptide library",
+    "jurisdiction": "EP",
+    "kind_code": "B1",
+    "publication_date": "2017-05-24",
+    "earliest_priority_date": "2011-10-21",
+    "status": "Active (per European Patent Register, to verify)",
+    "assignees": ["National University Corporation The University of Tokyo"],
+    "cpc_codes": ["C07K19/00", "C12N15/64", "C12P21/06"],
+    "source_urls": [
+      "https://patents.google.com/patent/EP2647720B1/en",
+      "https://register.epo.org/application?number=EP12194415"
+    ],
+    "notes": "Core RaPID library patent covering non-canonical residue incorporation via flexizyme/FIT."
+  },
+  {
+    "doc_number": "US10195578B2",
+    "title": "Peptide library production method, peptide library production apparatus, and peptide library",
+    "jurisdiction": "US",
+    "kind_code": "B2",
+    "publication_date": "2019-02-05",
+    "earliest_priority_date": "2011-10-21",
+    "status": "Active (check USPTO for legal events)",
+    "assignees": ["National University Corporation The University of Tokyo"],
+    "cpc_codes": ["C07K19/00", "C12N15/64", "C12P21/06"],
+    "source_urls": [
+      "https://patents.google.com/patent/US10195578B2/en",
+      "https://portal.uspto.gov/pair/PublicPair"
+    ],
+    "notes": "US counterpart to EP2647720, often cited as a RaPID platform anchor."
+  },
+  {
+    "doc_number": "US11970694B2",
+    "title": "Rapid display method in translational synthesis of peptide",
+    "jurisdiction": "US",
+    "kind_code": "B2",
+    "publication_date": "2024-04-23",
+    "earliest_priority_date": "2010-10-15",
+    "status": "Active (just granted; verify prosecution history for continuations)",
+    "assignees": ["PeptiDream Inc.", "Nissan Chemical Corporation"],
+    "cpc_codes": ["C07K14/47", "C12N15/90"],
+    "source_urls": [
+      "https://patents.justia.com/patent/11970694",
+      "https://patents.google.com/patent/US11970694B2/en"
+    ],
+    "notes": "Latest US grant in the RaPID lineage; continuation of WO2011049157."
+  },
+  {
+    "doc_number": "US9701993B2",
+    "title": "Artificial translation/synthesis system",
+    "jurisdiction": "US",
+    "kind_code": "B2",
+    "publication_date": "2017-07-11",
+    "earliest_priority_date": "2010-02-05",
+    "status": "Active (confirm maintenance fees and PTA)",
+    "assignees": ["National University Corporation The University of Tokyo"],
+    "cpc_codes": ["C12N15/63", "C12N15/90"],
+    "source_urls": [
+      "https://patents.google.com/patent/US9701993B2/en",
+      "https://portal.uspto.gov/pair/PublicPair"
+    ],
+    "notes": "Flexizyme/FIT system patent describing genetic code reprogramming for non-standard amino acids."
+  },
+  {
+    "doc_number": "US8445413B2",
+    "title": "Linker for constructing mRNA-puromycin-protein conjugate",
+    "jurisdiction": "US",
+    "kind_code": "B2",
+    "publication_date": "2013-05-21",
+    "earliest_priority_date": "2009-02-27",
+    "status": "Active (verify fee payments)",
+    "assignees": ["The General Hospital Corporation", "President and Fellows of Harvard College"],
+    "cpc_codes": ["C07H21/02", "C07K14/47"],
+    "source_urls": [
+      "https://patents.google.com/patent/US8445413B2/en",
+      "https://portal.uspto.gov/pair/PublicPair"
+    ],
+    "notes": "Represents linker chemistry space for mRNA display puromycin conjugates."
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "name": "retrieve_docs",
+  "description": "Return ranked passages with associated patent identifiers and offsets.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "User query string to drive hybrid retrieval."
+      },
+      "k": {
+        "type": "integer",
+        "description": "Maximum number of passages to return.",
+        "default": 8,
+        "minimum": 1,
+        "maximum": 20
+      }
+    },
+    "required": ["query"]
+  }
+}
