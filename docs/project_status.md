@@ -1,6 +1,6 @@
 # Patent RAG MVP Status Report
 
-_Last updated: 2025-11-06_
+_Last updated: 2025-11-06 (PM)_
 
 ## Current Scope
 
@@ -8,18 +8,52 @@ _Last updated: 2025-11-06_
 - PostgreSQL schema for patents, snippets, answers, and watch targets; SQLAlchemy ORM integrated.
 - Seed ingestion script populates starter corpus from curated JSON and ensures tables exist.
 - Embedding script computes normalized OpenAI embeddings for snippets (optional, idempotent).
-- Hybrid retrieval service combining PostgreSQL FTS results with vector fallback.
-- LLM orchestration service using OpenAI Responses API with Chat Completions fallback and disclaimer guard.
+- Hybrid retrieval service combining PostgreSQL FTS results with vector fallback (similarity thresholding and candidate caps).
+- LLM orchestration service using OpenAI Responses API with Chat Completions fallback, cost estimation, disclaimer guard, and JSON validation.
 - REST endpoints for health, patent search, and question answering with deterministic fallback when no context.
 - Pytest suite covering health check, patent search, QA success/404 behavior, LLM service stubs, and vector fallback constraints.
+- Repository initialized and published to GitHub (`jasonzdeng/mRNA_display_patent_BI`) with default branch `main` and secrets stripped from history.
 
 ## Technical Highlights
 
 - Configuration via Pydantic v2 `Settings`, centralized in `app/core/config.py`.
-- Retrieval safeguards: similarity thresholding, candidate limits, and result deduping.
-- LLM client emits structured JSON, tracks cost/latency, and works even if Responses API is unavailable.
+- Retrieval safeguards: similarity thresholding, candidate limits, deduping, and synchronous FastAPI endpoints to avoid event-loop blocking.
+- LLM client emits structured JSON, estimates cost when usage metadata is missing, guards against invalid JSON, and works even if Responses API is unavailable.
 - Tests run cleanly under Python 3.13 (no warnings) after timezone-aware datetime updates.
 - Dependencies pinned for compatibility (`openai` Responses support, SQLAlchemy 2.0.36+, Pydantic 2.9+).
+- `.gitignore` protects environment files; `.env` is no longer tracked.
+
+## Deployment Notes
+
+- Minimum requirements: Python 3.13, PostgreSQL 15+, and OpenAI API credentials exported in a `.env` file (not checked in).
+- Local bootstrap: `python -m uvicorn app.main:app --reload` against a running Postgres instance with `app/db/init_db.py` executed once for schema + seed data.
+- Database migrations are manual today; apply schema changes by re-running the seed script or executing DDL statements directly.
+- Production ready path: package the FastAPI app behind a process manager (e.g., `gunicorn` with `uvicorn.workers.UvicornWorker`) and point to managed Postgres; set `APP_ENV` to distinguish staging vs production configs.
+- Monitoring hooks: enable FastAPI access logs and capture OpenAI usage leveraging the cost estimation helpers for observability until full APM is wired up.
+
+## API Examples
+
+- Health check
+
+```bash
+curl http://localhost:8000/health
+```
+
+- Patent search (returns top matches with hybrid retrieval)
+
+```bash
+curl -X POST http://localhost:8000/api/patents/search \
+   -H "Content-Type: application/json" \
+   -d '{"query": "macrocyclic peptide patents", "limit": 5}'
+```
+
+- Question answering (falls back to deterministic response when no context)
+
+```bash
+curl -X POST http://localhost:8000/api/questions/ask \
+   -H "Content-Type: application/json" \
+   -d '{"question": "What patents cover mRNA display with ncAA cyclization?"}'
+```
 
 ## Outstanding Gaps vs. Business Needs
 
@@ -44,12 +78,14 @@ _Last updated: 2025-11-06_
 4. **Retrieval enhancements**
    - Move vector search into the database (pgvector or external index) for scalability and filtering.
    - Add facet and filter options (component type, assignee, jurisdiction, claim scope).
+   - Introduce pagination and relevance diagnostics for transparency.
 5. **LLM answer quality**
    - Design prompts combining structured analytics with snippets.
    - Add failure-path handling, grounding checks, and bias mitigation.
 6. **Evaluation & UX**
    - Create benchmark question sets with verified answers.
    - Surface results via UI or reporting templates; include confidence and coverage indicators.
+   - Monitor OpenAI usage leveraging new cost estimation hooks.
 7. **Operational readiness**
    - Introduce migrations (Alembic), CI/CD, environment configs, and monitoring hooks.
 
@@ -59,3 +95,4 @@ _Last updated: 2025-11-06_
 - Pending pipeline: highlight continuations or related applications still in prosecution.
 - Competitive mapping: link patents to commercial offerings or academic publications.
 - Collaboration support: exportable briefs summarizing key findings and expiration timelines.
+- CI/CD pipeline with automated tests and linting on pull requests.
