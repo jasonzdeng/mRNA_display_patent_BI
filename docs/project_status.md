@@ -13,6 +13,20 @@ _Last updated: 2025-11-06 (PM)_
 - REST endpoints for health, patent search, and question answering with deterministic fallback when no context.
 - Pytest suite covering health check, patent search, QA success/404 behavior, LLM service stubs, and vector fallback constraints.
 - Repository initialized and published to GitHub (`jasonzdeng/mRNA_display_patent_BI`) with default branch `main` and secrets stripped from history.
+- Targeted ingestion script (`scripts/ingest_mrna_display.py`) pulls mRNA-display filings from PatentsView, normalizes metadata, tags component coverage, and stores snippets.
+- WIPO PATENTSCOPE and EPO OPS clients integrated into the ingestion pipeline with family-level merging and optional full-text enrichment via Google Patents/local dumps.
+- Configurable query templates (`configs/mrna_ingestion.json`) expose synonym, CPC/IPC, and applicant filters; raw payload snapshots saved under `data/raw/mrna_display/`.
+- Coverage reporting utility (`scripts/report_mrna_coverage.py`) compares ingested corpus against a canonical list to flag gaps.
+
+## MVP Question Targets
+
+1. Which active patents cover the core mRNA-display service components (N-methylation workflows, incorporation of non-canonical amino acids, cyclization chemistries) that would block competitors?
+2. Which patent documents constitute the canonical, must-have set for this technical space, and does our corpus capture them all?
+3. What are the expiration dates and patent-family timelines for those key components across jurisdictions?
+4. How do these expirations impact competitive freedom-to-operate for other service providers once protections lapse?
+5. Are there any blocking continuations, reissues, or litigation outcomes that extend or modify enforceability for those components?
+6. What jurisdictions and claim scopes (composition, method, use) are covered vs uncovered for each key patent family?
+7. Where are the white-space opportunities or gaps in protection that signal potential for new offerings or filings?
 
 ## Technical Highlights
 
@@ -66,28 +80,14 @@ curl -X POST http://localhost:8000/api/questions/ask \
 
 ## Next Key Steps
 
-1. **Data acquisition**
-   - Stand up ingestion jobs (public APIs, bulk data, vendor feeds) filtered for mRNA display technologies.
-   - Normalize assignees, inventors, CPC codes, and build patent family linkages.
-2. **Domain enrichment**
-   - Annotate patents/snippets with component labels (N-methylation, ncAAs, cyclization) via rules or ML models.
-   - Capture processing chemistry, claim scope, and known competitors as structured fields.
-3. **Analytics layer**
-   - Implement expiration calculators covering priority, PCT, regional variants, and extensions.
-   - Build summaries for key dates, coverage gaps, and family completeness.
-4. **Retrieval enhancements**
-   - Move vector search into the database (pgvector or external index) for scalability and filtering.
-   - Add facet and filter options (component type, assignee, jurisdiction, claim scope).
-   - Introduce pagination and relevance diagnostics for transparency.
-5. **LLM answer quality**
-   - Design prompts combining structured analytics with snippets.
-   - Add failure-path handling, grounding checks, and bias mitigation.
-6. **Evaluation & UX**
-   - Create benchmark question sets with verified answers.
-   - Surface results via UI or reporting templates; include confidence and coverage indicators.
-   - Monitor OpenAI usage leveraging new cost estimation hooks.
-7. **Operational readiness**
-   - Introduce migrations (Alembic), CI/CD, environment configs, and monitoring hooks.
+1. **Validate canonical coverage**
+   - Populate the canonical doc-number list (and optional curated JSONL) with authoritative mRNA-display families. Ensure any `data/raw/mrna_display/curated.jsonl` file contains one JSON object per line using the schema in `docs/data/curated_samples.md`.
+   - Request a PatentsView API key (https://patentsview.org/apis/api-key) and export `PATENTSVIEW_API_KEY` alongside `WIPO_PATENTSCOPE_TOKEN`, `EPO_OPS_KEY`, and `EPO_OPS_SECRET` before running `python -m scripts.ingest_mrna_display --config configs/mrna_ingestion.json --dry-run --save-raw`.
+2. **Commit ingestion results**
+   - Rerun the ingestion without `--dry-run` once authentication succeeds (403 errors typically indicate missing `PATENTSVIEW_API_KEY`).
+   - Execute `python -m scripts.report_mrna_coverage --canonical <path>` and review any missing patents.
+3. **Broaden full-text sources**
+   - Extend the fetchers in `app/services/ingestion/mrna_pipeline.py` (e.g., Lens.org API or partner datasets) so claims/description coverage keeps up with the expanded corpus.
 
 ## Suggested Extensions
 

@@ -1,0 +1,24 @@
+{
+  "keywords": [
+    "\"mRNA display\"",
+    "\"mRNA-peptide fusion\""
+  ],
+  "synonyms": [
+    "\"ribosome display\"",
+    "\"RaPID platform\"",
+    "\"flexizyme\"",
+    "\"in vitro selection peptide\""
+  ],
+  "cpc_prefixes": ["C07K", "C12N", "C12P", "G01N"],
+  "ipc_prefixes": ["C12N", "G01N"],
+  "applicants": [
+    "Moderna",
+    "Ra Pharmaceuticals",
+    "PeptiDream",
+    "Chugai Pharmaceutical",
+    "Hoffmann-La Roche"
+  ],
+  "exclude_applicants": [],
+  "per_page": 100,
+  "max_pages": 10
+}
